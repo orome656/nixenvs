@@ -1,7 +1,9 @@
 {pkgs ? import <nixpkgs> {}, ...}: let
   envname = "pio-arduino-fhs";
   # as a function to make sure the same pkgs is used as in targetPkgs
-  mypython = pks: pks.python3.withPackages (ps: with ps; [platformio pylibftdi pyusb]);
+  mypython = pks: pks.python3.buildEnv.override {
+    extraLibs = with pks.python3.pkgs; [ platformio pylibftdi pyusb ];
+  };
   # "proxy" env, is this useful/necessary???
   # myEnv = pkgs.buildEnv {
   #   name = envname;
